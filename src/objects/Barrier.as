@@ -6,43 +6,34 @@ import starling.events.Event;
 import starling.textures.Texture;
 
 public class Barrier extends Sprite {
-    public var barrier:Image;
     public function Barrier() {
         super();
         this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 
     }
+    public var barrier:Image;
+    private var speed:Number = Math.max(.4, Math.random());
+
+    public function drawBarrier():void {
+        this.x = Math.random() * stage.stageWidth;
+        barrier = new Image(Texture.fromColor(20, 20, 0xFF7FFFD4));
+        this.height = 20;
+        this.width = 20;
+        while (barrier.bounds.left < 0 || barrier.bounds.right > stage.stageWidth) {
+            this.x = Math.random() * stage.stageWidth;
+        }
+        this.addChild(barrier);
+    }
 
     private function onAddedToStage(event:Event):void {
         this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+        this.addEventListener(Event.ENTER_FRAME, update);
         drawBarrier();
     }
 
-    private function drawBarrier():void {
-        var width:int = Math.random() * 80;
-        var height:int = 20;
-        while (width < 40) {
-            width = Math.random() * 80;
-        }
-        barrier = new Image(Texture.fromColor(width, height, 0xF5031f3f, true));
-        this.width = width;
-        this.height = height;
-        this.addChild(barrier);
-        move();
+    private function update(event:Event):void {
+        this.y += speed;
     }
-    public function move():void {
-        var checkX:int = Math.random() * stage.stageWidth;
-        this.x = checkX;
-        while(this.bounds.left < 0 || this.bounds.right > stage.stageWidth) {
-            checkX = Math.random()* stage.stageWidth;
-            this.x = checkX;
-        }
-        var checkY:Number = Math.random() * stage.stageHeight;
-        this.y = checkY;
-        while(this.bounds.top < 0 || this.bounds.bottom > stage.stageHeight) {
-            checkY = Math.random() * stage.stageHeight;
-            this.y = checkY;
-        }
-    }
+
 }
 }

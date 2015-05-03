@@ -1,31 +1,28 @@
+/**
+ * Created by Matthew on 5/2/2015.
+ */
 package screens {
 import events.NavigationEvent;
 
 import starling.display.Button;
 import starling.display.Sprite;
 import starling.events.Event;
+import starling.text.TextField;
 import starling.textures.Texture;
 
-/**
- * ...
- * @author Matthew Bonanno
- */
-public class Welcome extends Sprite {
-    public function Welcome() {
+public class HelpScreen extends Sprite {
+    public function HelpScreen() {
         this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
     }
 
     private var play:Button;
-    private var help:Button;
 
     public function initialize():void {
         this.visible = true;
-        this.addEventListener(Event.TRIGGERED, onMainMenuClicked);
     }
 
     public function disposeTemporarily():void {
         this.visible = false;
-        this.removeEventListener(Event.TRIGGERED, onMainMenuClicked);
     }
 
     private function drawScreen():void {
@@ -34,19 +31,12 @@ public class Welcome extends Sprite {
         var width:int = 100;
         var height:int = 100;
         spawnPlayButton(width, height);
-        spawnHelpButton(width, height);
-        initialize();
-    }
-
-    private function spawnHelpButton(width:int, height:int):void {
-        help = new Button(Texture.fromColor(width, height, 0xFF800080), "Help");
-        help.fontSize = 16;
-        help.fontBold = true;
-        help.height = height;
-        help.width = width;
-        help.x = stage.stageWidth / 4;
-        help.y = (stage.stageHeight / 4);
-        this.addChild(help);
+        var textField:TextField = new TextField(300, 100, "Use A to move left and D to move right. don't hit the falling blocks.");
+        textField.autoScale = true;
+        textField.x = stage.stageWidth / 5;
+        textField.y = stage.stageHeight / 8;
+        this.addChild(textField);
+        this.addEventListener(Event.TRIGGERED, onMainMenuClicked);
     }
 
     private function spawnPlayButton(width:int, height:int):void {
@@ -55,8 +45,8 @@ public class Welcome extends Sprite {
         play.fontBold = true;
         play.height = height;
         play.width = width;
-        play.x = stage.stageWidth / 2;
-        play.y = stage.stageHeight / 2;
+        play.x = stage.stageWidth / 3;
+        play.y = stage.stageHeight / 3;
         this.addChild(play);
 
     }
@@ -67,18 +57,8 @@ public class Welcome extends Sprite {
     }
 
     private function onMainMenuClicked(e:Event):void {
-        trace("main menu clicked");
         var buttonClicked:Button = e.target as Button;
-        if (buttonClicked == play) {
-            trace("play clicked");
-            this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "play"}, true));
-        }
-        if (buttonClicked == help) {
-            trace("help clicked");
-            this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "help"}, true));
-        }
+        this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "play"}, true));
     }
-
 }
-
 }
